@@ -12,11 +12,11 @@ Text::FixedWidth - Easy OO manipulation of fixed width text files.
 
 =head1 VERSION
 
-Version 0.01
+Version 0.02
 
 =cut
 
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 
 
 =head1 SYNOPSIS
@@ -186,6 +186,8 @@ sub auto_truncate {
 }
 
 
+sub DESTROY { }
+
 # Using Damian methodology so I don't need to require Moose.
 #    Object Oriented Perl (1st edition)
 #    Damian Conway
@@ -238,11 +240,10 @@ sub AUTOLOAD {
 =head1 ALTERNATIVES
 
 Other modules that do similar things that you might like:
-Parse::FixedLength,
-Text::FixedLength,
-Data::FixedFormat,
-AnyData::Format::Fixed 
-
+L<Parse::FixedLength>,
+L<Text::FixedLength>,
+L<Data::FixedFormat>,
+L<AnyData::Format::Fixed>
 
 =head1 AUTHOR
 

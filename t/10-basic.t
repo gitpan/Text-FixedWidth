@@ -2,6 +2,12 @@ use Test::More(tests => 26);
 use Test::Warn;
 use Text::FixedWidth;
 
+# -----------------------------------------------
+# This source lives in my SVN repository. 
+my $HeadURL = '$HeadURL: https://clabsvn.ist.unomaha.edu/svn/user/jhannah/Text-FixedWidth/t/10-basic.t $';
+my $Id      = '$Id: 10-basic.t 472 2008-09-03 12:45:08Z jhannah@IST.UNOMAHA.EDU $';
+# -----------------------------------------------
+
 ok(my $fw = new Text::FixedWidth, "new()");
 ok($fw->set_attributes(qw(
       fname            undef  %10s

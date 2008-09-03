@@ -5,6 +5,11 @@ use strict;
 use Carp;
 use vars ('$AUTOLOAD');
 
+# -----------------------------------------------
+# This source lives in my SVN repository. 
+my $HeadURL = '$HeadURL: https://clabsvn.ist.unomaha.edu/svn/user/jhannah/Text-FixedWidth/lib/Text/FixedWidth.pm $';
+my $Id      = '$Id: FixedWidth.pm 472 2008-09-03 12:45:08Z jhannah@IST.UNOMAHA.EDU $';
+# -----------------------------------------------
 
 =head1 NAME
 
@@ -12,11 +17,11 @@ Text::FixedWidth - Easy OO manipulation of fixed width text files.
 
 =head1 VERSION
 
-Version 0.03
+Version 0.04
 
 =cut
 
-our $VERSION = '0.03';
+our $VERSION = '0.04';
 
 
 =head1 SYNOPSIS

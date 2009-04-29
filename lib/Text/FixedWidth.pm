@@ -8,20 +8,20 @@ use vars ('$AUTOLOAD');
 # -----------------------------------------------
 # This source lives in my SVN repository. 
 my $HeadURL = '$HeadURL: https://clabsvn.ist.unomaha.edu/svn/user/jhannah/Text-FixedWidth/lib/Text/FixedWidth.pm $';
-my $Id      = '$Id: FixedWidth.pm 472 2008-09-03 12:45:08Z jhannah@IST.UNOMAHA.EDU $';
+my $Id      = '$Id: FixedWidth.pm 629 2009-04-29 15:52:01Z jhannah@IST.UNOMAHA.EDU $';
 # -----------------------------------------------
 
 =head1 NAME
 
-Text::FixedWidth - Easy OO manipulation of fixed width text files.
+Text::FixedWidth - Easy OO manipulation of fixed width text files
 
 =head1 VERSION
 
-Version 0.04
+Version 0.05
 
 =cut
 
-our $VERSION = '0.04';
+our $VERSION = '0.05';
 
 
 =head1 SYNOPSIS
@@ -159,7 +159,7 @@ sub string {
          warn "string() error! Length of $_ cannot exceed $length, but it does. Please shorten the value '$value'";
          return 0;
       }
-      my $tmp = sprintf($sprintf, $value);
+      my $tmp = sprintf($sprintf, $value || "");
       if (length($tmp) != $length) {
          die "Ack! " . ref($self) . " is loaded with an sprintf format which returns a string that is NOT the correct length! Please correct the class! The error occured on attribute '$_' converting value '$value' via sprintf '$sprintf', which is '$tmp', which is not '$length' characters long";
       }
@@ -187,6 +187,10 @@ sub auto_truncate {
    my ($self, @attrs) = @_;
    $self->{_auto_truncate} = {};
    foreach my $attr (@attrs) {
+      unless ($self->{_attributes}{$attr}) {
+         carp "Can't auto_truncate attribute '$attr' because that attribute does not exist";
+         next;
+      }
       $self->{_auto_truncate}->{$attr} = 1;
    }
    return 1;
@@ -221,15 +225,15 @@ sub AUTOLOAD {
       my $val  = $_[1];
       croak "Can't set_$att(). No such attribute: $att" unless (defined $self->{_attributes}{$att});
       if (defined $self->{_attributes}{$att}) {
-        if (length($val) > $self->{_attributes}{$att}{length}) {
-           if ($self->{_auto_truncate}{$att}) {
-              $val = substr($val, 0, $self->{_attributes}{$att}{length});
-              $self->{_attributes}{$att}{value} = $val;
-           } else {
-              carp "Can't set_$att('$val'). Value must be " .
-                 $self->{_attributes}{$att}{length} . " characters or shorter";
-              return undef;
-           }
+        if (defined $val && length($val) > $self->{_attributes}{$att}{length}) {
+          if ($self->{_auto_truncate}{$att}) {
+            $val = substr($val, 0, $self->{_attributes}{$att}{length});
+            $self->{_attributes}{$att}{value} = $val;
+          } else {
+            carp "Can't set_$att('$val'). Value must be " .
+              $self->{_attributes}{$att}{length} . " characters or shorter";
+            return undef;
+          }
         }
         $self->{_attributes}{$att}{value} = $val;
         return 1;
@@ -254,7 +258,7 @@ L<AnyData::Format::Fixed>
 
 =head1 AUTHOR
 
-Jay Hannah, C<< <jay at jays.net> >>
+Jay Hannah, C<< <jay at jays.net> >>, http://jays.net
 
 =head1 BUGS
 
@@ -288,12 +292,16 @@ L<http://cpanratings.perl.org/d/Text-FixedWidth>
 
 L<http://search.cpan.org/dist/Text-FixedWidth>
 
+=item * Source code
+
+svn checkout https://clabsvn.ist.unomaha.edu/anonsvn/user/jhannah/Text-FixedWidth
+
 =back
 
 
 =head1 COPYRIGHT & LICENSE
 
-Copyright 2008 Jay Hannah, all rights reserved.
+Copyright 2008-2009 Jay Hannah, all rights reserved.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

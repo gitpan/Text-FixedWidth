@@ -1,11 +1,12 @@
-use Test::More(tests => 26);
+use Test::More(tests => 27);
 use Test::Warn;
 use Text::FixedWidth;
+use warnings;
 
 # -----------------------------------------------
 # This source lives in my SVN repository. 
 my $HeadURL = '$HeadURL: https://clabsvn.ist.unomaha.edu/svn/user/jhannah/Text-FixedWidth/t/10-basic.t $';
-my $Id      = '$Id: 10-basic.t 472 2008-09-03 12:45:08Z jhannah@IST.UNOMAHA.EDU $';
+my $Id      = '$Id: 10-basic.t 629 2009-04-29 15:52:01Z jhannah@IST.UNOMAHA.EDU $';
 # -----------------------------------------------
 
 ok(my $fw = new Text::FixedWidth, "new()");
@@ -45,5 +46,15 @@ warning_like
 is($fw->get_mi(), "W",                         "get_mi()");   # still old value
 
 is($fw->string, "ffffffffffWllllllllll0017",   "string()");
+
+# Suppress spurious warnings when at attribute is explicitly set to undef.
+$fw->set_fname(undef);
+$fw->string;
+
+# Carp out a warning if the user tries to set auto_truncate() on an attribute that doesn't exit.
+warning_like 
+    { $fw->auto_truncate("bogus") } 
+    { carped => qr/Can't auto_truncate attribute .* does not exist/ }, 
+    "auto_truncate('bogus') throws warning";
 
 

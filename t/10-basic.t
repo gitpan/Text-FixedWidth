@@ -1,4 +1,4 @@
-use Test::More(tests => 31);
+use Test::More(tests => 33);
 use Test::Warn;
 use Text::FixedWidth;
 use warnings;
@@ -62,6 +62,12 @@ warning_like
     { $fw->string } 
     qr/Text::FixedWidth attribute 'points' contains '' which is not numeric/,
     "string() for undef formatted for numeric throws warning";
+
+ok($fw->set_points(undef),                     "set a numeric to undef");
+warning_like 
+    { $fw->string } 
+    qr/Text::FixedWidth attribute 'points' contains '' which is not numeric/,
+    "string() for non-numerics formatted for numeric throws warning";
 
 
 

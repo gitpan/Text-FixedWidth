@@ -4,6 +4,7 @@ use warnings;
 use strict;
 use Carp;
 use vars ('$AUTOLOAD');
+use Storable ();
 
 =head1 NAME
 
@@ -11,7 +12,7 @@ Text::FixedWidth - Easy OO manipulation of fixed width text files
 
 =cut
 
-our $VERSION = '0.07';
+our $VERSION = '0.07_01';
 
 =head1 SYNOPSIS
 
@@ -115,6 +116,8 @@ sub parse {
    die ref($self).":Please provide a string argument" if (!$args{string});
    my $string = $args{string};
 
+   $self = $self->clone if $args{clone};
+
    my $offset = 0;
    foreach (@{$self->{_attribute_order}}) {
       my $length = $self->{_attributes}{$_}{length};
@@ -122,7 +125,7 @@ sub parse {
       $offset += $length;
    }
 
-   return 1;
+   return $args{clone}? $self : 1;
 }
 
 
@@ -145,14 +148,21 @@ sub string {
       $sprintf = $self->{_attributes}{$att}{sprintf};
 
       if (defined ($value) and length($value) > $length) {
-         warn "string() warning: Length of $att cannot exceed $length, but it does. Please shorten the value '$value'";
+         warn "string() error! " . ref($self) . " length of attribute '$att' cannot exceed '$length', but it does. Please shorten the value '$value'";
          return 0;
+      }
+      if (not defined $value) {
+         $value = '';
+      }
+      unless ($sprintf) {
+         warn "string() error! " . ref($self) . " sprintf not set on attribute $att. Using '%s'";
+         $sprintf = '%s';
       }
 
       my $tmp;
       if (
          $sprintf =~ /\%\d*[duoxefgXEGbB]/ && (       # perldoc -f sprintf
-            (not defined $value) || 
+            (not defined $value) ||
             $value eq "" ||
             $value !~ /^(\d+\.?\d*|\.\d+)$/        # match valid number
          )
@@ -198,6 +208,30 @@ sub auto_truncate {
    }
    return 1;
 }
+
+=head2 clone
+
+Provides a clone of a Text::FixedWidth object. If available it will attempt
+to use L<Clone::Fast> or L<Clone::More> falling back on L<Storable/dclone>.
+
+   my $fw_copy = $fw->clone;
+
+This method is most useful when being called from with in the L</parse> method.
+
+   while( my $row = $fw->parse( clone => 1, string => $str ) ) {
+      print $row->foobar;
+   }
+
+See L</parse> for further information.
+
+=cut
+
+sub clone {
+   my $self = shift;
+   return Storable::dclone($self);
+}
+
+
 
 
 sub DESTROY { }
@@ -253,7 +287,7 @@ sub AUTOLOAD {
 
 =head1 ALTERNATIVES
 
-Other modules that may do similar things: 
+Other modules that may do similar things:
 L<Parse::FixedLength>,
 L<Text::FixedLength>,
 L<Data::FixedFormat>,

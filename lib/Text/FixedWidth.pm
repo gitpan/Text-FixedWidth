@@ -12,7 +12,7 @@ Text::FixedWidth - Easy OO manipulation of fixed width text files
 
 =cut
 
-our $VERSION = '0.08';
+our $VERSION = '0.09';
 
 =head1 SYNOPSIS
 
@@ -338,7 +338,7 @@ L<http://github.com/jhannah/text-fixedwidth>
 
 =head1 COPYRIGHT & LICENSE
 
-Copyright 2008-2009 Jay Hannah, all rights reserved.
+Copyright 2008-2010 Jay Hannah, all rights reserved.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

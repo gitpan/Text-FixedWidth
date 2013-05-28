@@ -7,6 +7,7 @@ t/00-load.t
 t/10-basic.t
 t/11-clone.t
 t/boilerplate.t
+t/getf.t
 t/pod-coverage.t
 t/pod.t
 META.yml                                 Module YAML meta-data (added by MakeMaker)

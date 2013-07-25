@@ -22,4 +22,4 @@ no_index:
 requires: {}
 resources:
   repository: https://github.com/jhannah/text-fixedwidth
-version: 0.11
+version: 0.12

@@ -11,5 +11,8 @@ t/formatsubs.t
 t/getf.t
 t/pod-coverage.t
 t/pod.t
+t/reader.t
+t/writer.t
+t/writer_and_reader.t
 META.yml                                 Module YAML meta-data (added by MakeMaker)
 META.json                                Module JSON meta-data (added by MakeMaker)
